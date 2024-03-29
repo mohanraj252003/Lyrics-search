@@ -5,6 +5,7 @@ const more = document.getElementById("more");
 const backButton = document.createElement("button");
 backButton.className = "back";
 backButton.textContent = "<";
+backButton.onclick = () => window.history.back();
 
 const apiURL = "https://api.lyrics.ovh";
 
@@ -32,6 +33,7 @@ async function getLyrics(artist, songTitle) {
 
   }
   more.innerHTML = "";
+  document.body.appendChild(backButton);
 }
 
 async function getMoreSongs(url) {
@@ -93,10 +95,15 @@ result.addEventListener("click", (e) => {
     getLyrics(artist, songTitle);
   }
 });
-document.body.appendChild(backButton);
-backButton.style.display = "none";
-backButton.addEventListener("click", () => {
-  console.log('back is pushed');
-  window.history.back();
-});
-searchSongs("Believer");
+const init = () => {
+  searchSongs("Believer");
+};
+init();
+backButton.onclick = () => {
+  result.innerHTML = "";
+  more.innerHTML = "";
+  search.value = "";
+  backButton.style.display = "none";
+  init();
+};
+
